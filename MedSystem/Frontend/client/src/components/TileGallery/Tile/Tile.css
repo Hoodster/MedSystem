@@ -1,0 +1,18 @@
+.card-container {
+    width: 20rem;
+    margin-top: 100px;
+}
+
+.tile-button {
+    width: 100%;
+}
+
+.card-title {
+    text-align: center;
+}
+
+.tile-body {
+    min-height: 225px;
+    max-height: 225px;
+    overflow-y: auto;
+}

@@ -4,116 +4,22 @@ using MedSystem.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MedSystem.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211129073354_User_Registration_Additional_Info")]
+    partial class User_Registration_Additional_Info
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.12")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("MedSystem.Models.Patient", b =>
-                {
-                    b.Property<Guid>("PatientId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("PatientId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Patients");
-                });
-
-            modelBuilder.Entity("MedSystem.Models.Questionnaire", b =>
-                {
-                    b.Property<Guid>("QuestionnaireID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Aids")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AllergyToAnesthetics")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AllergyToDentalMaterials")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("BloodDiseases")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Cancers")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ConditionsNotMentioned")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CytostaticDrugs")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Diabetes")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DrugAllergy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Epilepsy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("HeartDiseases")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("KidneyDisease")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LiverDisease")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LungDiseases")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("OphthalmicDiseases")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("OrganTransplant")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Osteoporosis")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("PatientId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("RheumaticDiseases")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Stroke")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SurgicalProcedures")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TakeMedications")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("QuestionnaireID");
-
-                    b.HasIndex("PatientId")
-                        .IsUnique();
-
-                    b.ToTable("HealthQuestionnaires");
-                });
 
             modelBuilder.Entity("MedSystem.Models.User", b =>
                 {
@@ -163,17 +69,11 @@ namespace MedSystem.Migrations
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("PatientId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
-
-                    b.Property<string>("SecondName")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
@@ -194,8 +94,6 @@ namespace MedSystem.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.HasIndex("PatientId");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -331,37 +229,6 @@ namespace MedSystem.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("MedSystem.Models.Patient", b =>
-                {
-                    b.HasOne("MedSystem.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("MedSystem.Models.Questionnaire", b =>
-                {
-                    b.HasOne("MedSystem.Models.Patient", "Patient")
-                        .WithOne("Questionnaire")
-                        .HasForeignKey("MedSystem.Models.Questionnaire", "PatientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Patient");
-                });
-
-            modelBuilder.Entity("MedSystem.Models.User", b =>
-                {
-                    b.HasOne("MedSystem.Models.Patient", "Patient")
-                        .WithMany()
-                        .HasForeignKey("PatientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Patient");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -411,11 +278,6 @@ namespace MedSystem.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("MedSystem.Models.Patient", b =>
-                {
-                    b.Navigation("Questionnaire");
                 });
 #pragma warning restore 612, 618
         }

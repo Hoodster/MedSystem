@@ -4,14 +4,16 @@ using MedSystem.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MedSystem.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211217205839_User_Add_SecondName")]
+    partial class User_Add_SecondName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,12 +27,19 @@ namespace MedSystem.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("QuestionnaireID")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("PatientId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("QuestionnaireID");
+
+                    b.HasIndex("UserId")
+                        .IsUnique()
+                        .HasFilter("[UserId] IS NOT NULL");
 
                     b.ToTable("Patients");
                 });
@@ -92,9 +101,6 @@ namespace MedSystem.Migrations
                     b.Property<string>("Osteoporosis")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("PatientId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("RheumaticDiseases")
                         .HasColumnType("nvarchar(max)");
 
@@ -108,9 +114,6 @@ namespace MedSystem.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("QuestionnaireID");
-
-                    b.HasIndex("PatientId")
-                        .IsUnique();
 
                     b.ToTable("HealthQuestionnaires");
                 });
@@ -163,8 +166,8 @@ namespace MedSystem.Migrations
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("PatientId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("PatientId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
@@ -194,8 +197,6 @@ namespace MedSystem.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.HasIndex("PatientId");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -333,33 +334,17 @@ namespace MedSystem.Migrations
 
             modelBuilder.Entity("MedSystem.Models.Patient", b =>
                 {
-                    b.HasOne("MedSystem.Models.User", "User")
+                    b.HasOne("MedSystem.Models.Questionnaire", "Questionnaire")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("QuestionnaireID");
+
+                    b.HasOne("MedSystem.Models.User", "User")
+                        .WithOne("Patient")
+                        .HasForeignKey("MedSystem.Models.Patient", "UserId");
+
+                    b.Navigation("Questionnaire");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("MedSystem.Models.Questionnaire", b =>
-                {
-                    b.HasOne("MedSystem.Models.Patient", "Patient")
-                        .WithOne("Questionnaire")
-                        .HasForeignKey("MedSystem.Models.Questionnaire", "PatientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Patient");
-                });
-
-            modelBuilder.Entity("MedSystem.Models.User", b =>
-                {
-                    b.HasOne("MedSystem.Models.Patient", "Patient")
-                        .WithMany()
-                        .HasForeignKey("PatientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Patient");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -413,9 +398,9 @@ namespace MedSystem.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("MedSystem.Models.Patient", b =>
+            modelBuilder.Entity("MedSystem.Models.User", b =>
                 {
-                    b.Navigation("Questionnaire");
+                    b.Navigation("Patient");
                 });
 #pragma warning restore 612, 618
         }

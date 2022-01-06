@@ -1,0 +1,81 @@
+.form-container {
+    border-radius: 3%;  
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    width: 50vw;   
+    border-radius: 10px;
+    border: 2px solid rgba(255,255,255,0.1);
+    box-shadow: 0 0 40px rgba(8,7,16,0.6);
+    padding: 3vw 6vw;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin-top: 50px;
+    
+}
+
+.form-title-container {
+    font-size: 32px;
+    font-weight: 500;
+    line-height: 42px;
+    text-align: center;
+    margin-top: 0;
+    align-self: center;
+}
+.form-content-container {
+    width: 100%;
+}
+
+.form-content-container > form > input {
+    display: block;
+    height: 20px;
+    width: 98%;
+    border-radius: 3px;
+    margin-top: 8px;
+    font-size: 15px;
+    font-weight: 300;
+}
+
+.form-content-container > form > label {
+    display: block;
+    margin-top: 30px;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.form-content-container > form > button {
+    margin-top: 50px;
+    width: 99%;
+    background-color: #ffffff;
+    color: #080710;
+    padding: 15px 0;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.form-content-container > form > button:hover {
+    color: #ffffff;
+    background-color: #080710;
+    
+}
+
+.form-options-container {
+    margin-top: 10px;
+}
+
+
+@media only screen and (max-width: 1024px) {
+    .form-container{
+        width: 80vw;
+        height: fit-content;
+    }    
+}
+
+@media only screen and (max-width: 600px) {
+    .form-container{
+        width: 80vw;
+        height: fit-content;
+    }    
+}
