@@ -3,8 +3,8 @@ namespace MedSystem.Models
 {
 	public static class ApplicationRoles
 	{
-		public static readonly string Patient = "Patient";
-		public static readonly string Doctor = "Doctor";
-		public static readonly string Admin = "Administrator";
+		public const string Patient = "Patient";
+		public const string Doctor = "Doctor";
+		public const string Admin = "Administrator";
 	}
 }

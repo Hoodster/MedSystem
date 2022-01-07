@@ -29,7 +29,7 @@ namespace MedSystem.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateAccount([FromBody] CreateUserDto user)
         {
-            var result = await _accountRepository.CreateAccount(user);
+            var result = await _accountRepository.CreateAccount(user, ApplicationRoles.Patient);
             return Ok(result);
         }
 

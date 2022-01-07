@@ -9,26 +9,29 @@ namespace MedSystem.Core.QuestionnaireRepository
 {
     public class QuestionnaireRepository : IQuestionnaireRepository
     {
-        public void CreateDatabaseConnection(ApplicationDbContext applicationDbContext, QuestionnaireDTO questionnaire)
+        private readonly ApplicationDbContext _applicationDbContext;
+        private readonly IAccountRepository _accountRepository;
+        public void CreateDatabaseConnection( QuestionnaireDTO questionnaire)
         {
             var questionnaireModel = new Questionnaire(questionnaire);
-            applicationDbContext.HealthQuestionnaires.Add(questionnaireModel);
-            applicationDbContext.SaveChanges();
+            _applicationDbContext.HealthQuestionnaires.Add(questionnaireModel);
+            _applicationDbContext.SaveChanges();
         }
-        public async Task<Questionnaire> GetCurrentUserQuestionnaireAsync(ApplicationDbContext applicationDbContext, IAccountRepository accountRepository)
+        public async Task<Questionnaire> GetCurrentUserQuestionnaireAsync()
         {
-            var currentUser = await accountRepository.GetCurrentUser();
-            var userQuestionnaire = applicationDbContext.HealthQuestionnaires
-                .Single(q => q.PatientId.ToString().ToLower() == currentUser.PatientId.ToLower());
+            var currentUser = await _accountRepository.GetCurrentUser();
+            var userQuestionnaire = _applicationDbContext.HealthQuestionnaires
+                .Single(q => q.PatientId == currentUser.PatientId.Value);
 
             return userQuestionnaire;
         }
 
-        public async Task UpdateCurrentUserQuestionnaireAsync(ApplicationDbContext applicationDbContext, IAccountRepository accountRepository, QuestionnaireDTO questionnaire)
+        public async Task UpdateCurrentUserQuestionnaireAsync( QuestionnaireDTO questionnaire)
         {
-            var currentUser = await accountRepository.GetCurrentUser();
-            var oldQuestionnaire = applicationDbContext.HealthQuestionnaires
-                .Single(q => q.PatientId.ToString().ToLower() == currentUser.PatientId.ToLower());
+
+            var currentUser = await _accountRepository.GetCurrentUser();
+            var oldQuestionnaire = _applicationDbContext.HealthQuestionnaires
+                .Single(q => q.PatientId == currentUser.PatientId.Value);
             if (oldQuestionnaire != null)
             {
                 foreach (var property in questionnaire.GetType().GetProperties())
@@ -40,7 +43,7 @@ namespace MedSystem.Core.QuestionnaireRepository
                         property.SetValue(oldQuestionnaire, property.GetValue(questionnaire));
                     }
                 }
-                applicationDbContext.SaveChanges();
+                _applicationDbContext.SaveChanges();
             }
         }
     }

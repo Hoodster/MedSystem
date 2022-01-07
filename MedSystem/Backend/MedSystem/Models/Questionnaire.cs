@@ -38,6 +38,7 @@ namespace MedSystem.Models
             string cytostaticDrugs,
             string organTransplant) 
             : base(
+                patientId,
                 heartDiseases,
                 bloodDiseases,
                 lungDiseases,
@@ -65,6 +66,7 @@ namespace MedSystem.Models
 
         public Questionnaire(QuestionnaireDTO questionnaire) : base(questionnaire) 
         {
+            PatientId = questionnaire.PatientId;
         }
 
         public Questionnaire()

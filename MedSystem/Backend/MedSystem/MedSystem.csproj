@@ -35,6 +35,8 @@
     <None Remove="System.IdentityModel.Tokens.Jwt" />
     <None Remove="Exceptions\" />
     <None Remove="Core\Repositories\PatientRepository\" />
+    <None Remove="Core\Repositories\AdminRepository\" />
+    <None Remove="Core\Repositories\DoctorRepository\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\DTO\" />
@@ -42,5 +44,7 @@
     <Folder Include="Core\Services\" />
     <Folder Include="Exceptions\" />
     <Folder Include="Core\Repositories\PatientRepository\" />
+    <Folder Include="Core\Repositories\AdminRepository\" />
+    <Folder Include="Core\Repositories\DoctorRepository\" />
   </ItemGroup>
 </Project>

@@ -8,9 +8,10 @@ namespace MedSystem.Core.AccountRepository
 {
     public interface IAccountRepository
     {
-        Task<string> CreateAccount(CreateUserDto user);
+        Task<string> CreateAccount(CreateUserDto user, string role);
         Task<JwtSecurityTokenDTO> SignInAccount(UserCredentialsDto credentials);
         Task<User> GetCurrentUser();
+        bool IsAccountExisiting(string email);
     }
 }
 

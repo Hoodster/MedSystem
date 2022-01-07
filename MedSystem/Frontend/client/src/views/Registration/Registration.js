@@ -83,7 +83,7 @@ class Registration extends React.Component {
   handleSubmitRegistrationForm = (event) => {
     event.preventDefault();
     const firstName = event.target.firstName.value;
-    // const secondName = event.target.secondName.value;
+    const secondName = event.target.secondName.value;
     const lastName = event.target.lastName.value;
     const birthDate = event.target.birthDate.value;
     const pesel = event.target.pesel.value;
@@ -92,7 +92,6 @@ class Registration extends React.Component {
     const password = event.target.password.value;
 
     this.setErrorsToInput(firstName, "firstNameError");
-    // this.setErrorsToInput(secondName, "secondNameError");
     this.setErrorsToInput(lastName, "lastNameError");
     this.setErrorsToInput(birthDate, "birthDateError");
     this.setErrorsToInput(pesel, "peselError");
@@ -102,7 +101,7 @@ class Registration extends React.Component {
 
     setTimeout(() => {
       if (this.areAllInputsValid()) {
-        const object = { firstName: firstName, lastName: lastName, password: password, birthDate: birthDate, phoneNumber: phoneNumber, pesel: pesel, email: email };
+        const object = { firstName: firstName, secondName: secondName, lastName: lastName, password: password, birthDate: birthDate, phoneNumber: phoneNumber, pesel: pesel, email: email };
         this.sendRequest(object);
       }
     }, 1000);

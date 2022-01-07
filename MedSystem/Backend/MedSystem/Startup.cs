@@ -21,6 +21,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Text.Json.Serialization;
 using MedSystem.Core.Repositories.PatientRepository;
+using MedSystem.Core.Repositories.DoctorRepository;
+using MedSystem.Core.Repositories.AdminRepository;
 
 namespace MedSystem
 {
@@ -134,6 +136,24 @@ namespace MedSystem
             {
                 endpoints.MapControllers();
             });
+
+            using (var scope = app.ApplicationServices.CreateScope())
+            {
+                using (var context = scope.ServiceProvider.GetService<ApplicationDbContext>())
+                {
+                    context.Database.EnsureCreated();
+                }
+            }
+        }
+
+        private static void AddDI(IServiceCollection services)
+        {
+            services.AddSingleton<IAuthenticationService, AuthenticationService>();
+            services.AddScoped<IAccountRepository, AccountRepository>();
+            services.AddScoped<IQuestionnaireRepository, QuestionnaireRepository>();
+            services.AddScoped<IPatientRepository, PatientRepository>();
+            services.AddScoped<IDoctorRepository, DoctorRepository>();
+            services.AddScoped<IAdminRepository, AdminRepository>();
         }
 
         private void AddDI(IServiceCollection services)

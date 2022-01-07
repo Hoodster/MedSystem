@@ -9,6 +9,7 @@ namespace MedSystem.Models
 {
     public class QuestionnaireDTO 
     {
+        public Guid PatientId { get; set; }
         public string HeartDiseases { get; set; }
         public string BloodDiseases { get; set; }
         public string LungDiseases { get; set; }
@@ -32,6 +33,7 @@ namespace MedSystem.Models
         public string OrganTransplant { get; set; }
 
         public QuestionnaireDTO(
+            Guid patientId,
             string heartDiseases,
             string bloodDiseases,
             string lungDiseases,
@@ -55,6 +57,7 @@ namespace MedSystem.Models
             string organTransplant
         )
         {
+            this.PatientId = patientId;
             this.HeartDiseases = heartDiseases;
             this.BloodDiseases = bloodDiseases;
             this.LungDiseases = lungDiseases;
@@ -80,6 +83,7 @@ namespace MedSystem.Models
 
         public QuestionnaireDTO(QuestionnaireDTO questionnaire) 
         {
+            this.PatientId = questionnaire.PatientId;
             this.HeartDiseases = questionnaire.HeartDiseases;
             this.BloodDiseases = questionnaire.BloodDiseases;
             this.LungDiseases = questionnaire.LungDiseases;

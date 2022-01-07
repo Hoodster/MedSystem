@@ -16,31 +16,35 @@ namespace MedSystem.Controllers
     [ApiController]
     public class QuestionnaireController : Controller
     {
-        private readonly ApplicationDbContext _applicationDbContext;
         private readonly IQuestionnaireRepository _questionnaireRepository;
-        private readonly IAccountRepository _accountRepository;
 
-        public QuestionnaireController(ApplicationDbContext dbContext, IQuestionnaireRepository questionnaireRepository, IAccountRepository accountRepository)
+        public QuestionnaireController(IQuestionnaireRepository questionnaireRepository)
         {
-            this._accountRepository = accountRepository;
             this._questionnaireRepository = questionnaireRepository;
-            this._applicationDbContext = dbContext;
         }
 
         [Route("questionnaire")]
         [HttpPost]
         public IActionResult AddHealthQuestionnaire([FromBody] QuestionnaireDTO questionnaire)
         {
-                questionnaireRepository.CreateDatabaseConnection(applicationDbContext, questionnaire);
-                return Ok(questionnaire);   
+            _questionnaireRepository.CreateDatabaseConnection( questionnaire);
+            return Ok(questionnaire);
+        }
+
+        [Route("roleTest")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Patient")]
+        [HttpPost]
+        public IActionResult Index()
+        {
+            return Ok();
         }
 
         [Route("questionnaire")]
         [HttpPut]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> putQuestionnaireAnswersAsync([FromBody] QuestionnaireDTO questionnaire)
+        public async Task<IActionResult> PutQuestionnaireAnswersAsync([FromBody] QuestionnaireDTO questionnaire)
         {
-           await questionnaireRepository.UpdateCurrentUserQuestionnaireAsync(_applicationDbContext, _accountRepository, _questionnaire);
+            await _questionnaireRepository.UpdateCurrentUserQuestionnaireAsync(questionnaire);
 
             return Ok();
         }
@@ -48,11 +52,12 @@ namespace MedSystem.Controllers
         [Route("questionnaire")]
         [HttpGet]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> getQuestionnaireAnswers()
+        public async Task<IActionResult> GetQuestionnaireAnswers()
         {
-            var userQuestionnaire = await questionnaireRepository.GetCurrentUserQuestionnaireAsync(_applicationDbContext, _accountRepository);
+            var userQuestionnaire = await _questionnaireRepository.GetCurrentUserQuestionnaireAsync();
 
             return Ok(userQuestionnaire);
         }
+        
     }
 }

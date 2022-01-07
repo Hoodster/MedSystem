@@ -11,11 +11,19 @@ namespace MedSystem.Models
         public string LastName { get; set; }
         public DateTimeOffset BirthDate { get; set; }
         public string PESEL { get; set; }
-        
-        public Patient Patient { get; set; }
+
         [ForeignKey("Patient")]
         public Guid? PatientId { get; set; }
+        public virtual Patient Patient { get; set; }
 
+        [ForeignKey("Doctor")]
+        public Guid? DoctorId { get; set; }
+        public virtual Doctor Doctor { get; set; }
+
+        [ForeignKey("Admin")]
+        public Guid? AdminId { get; set; }
+        public virtual Admin Admin { get; set; }
+        
         public User()
         {
         }
