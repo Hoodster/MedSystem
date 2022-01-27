@@ -352,3 +352,5 @@ ASALocalRun/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+MedSystem/Backend/MedSystem/appsettings.json
+MedSystem/Frontend/client/package-lock.json

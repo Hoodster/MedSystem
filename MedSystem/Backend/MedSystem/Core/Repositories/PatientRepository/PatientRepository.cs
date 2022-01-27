@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using MedSystem.Models;
 
@@ -24,6 +25,12 @@ namespace MedSystem.Core.Repositories.PatientRepository
             _dbContext.Entry<User>(user).Entity.PatientId = patientEntry.Entity.PatientId;
             await _dbContext.SaveChangesAsync();
         }
+
+        public IQueryable<User> GetPatientByPesel(string pesel)
+        {
+            var patient = _dbContext.Users.Where(u => (u.PESEL == pesel) && (u.PatientId != null));
+
+            return patient;
+        }
     }
 }
-

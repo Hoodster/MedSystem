@@ -1,7 +1,6 @@
 import React from "react";
-import FormTemplate from "../../components/FormTemplate";
-import axios from "axios";
 import "./Registration.css";
+import { Form, Button } from "react-bootstrap";
 
 class Registration extends React.Component {
   state = {
@@ -29,11 +28,12 @@ class Registration extends React.Component {
     emailError: {
       nonAt: "Brak znaku @ w emailu",
       nonSignAfterAt: "Brak części maila po znaku @",
-      nonSignBeforeAt: "Brak części maila przed znakiem @"
+      nonSignBeforeAt: "Brak części maila przed znakiem @",
     },
     phoneNumberError: "Błędny numer telefonu",
-    passwordError: "Hasło musi posiadać minimum 8 znaków oraz posiadać: wielką literę, znak specjalny, oraz cyfrę ! "
-  }
+    passwordError:
+      "Hasło musi posiadać minimum 8 znaków oraz posiadać: wielką literę, znak specjalny, oraz cyfrę ! ",
+  };
 
   handleFormOnChange = (event) => {
     this.setState({
@@ -57,17 +57,6 @@ class Registration extends React.Component {
     this.setTempalteDate();
   }
 
-  sendRequest = (object) => {
-    axios.post("http://localhost:5000/api/account/register", object).then(resp => {
-      localStorage.setItem('userEmail', this.state.email);
-      localStorage.setItem('userPassword', this.state.password);
-      localStorage.setItem('userId', resp.data);
-      localStorage.setItem('role', 'patient');
-      window.location.href = "questionnaire"
-
-    });
-  };
-
   isPeselValid = (pesel) => {
     const weight = [1, 3, 7, 9, 1, 3, 7, 9, 1, 3];
     const controlNumber = parseInt(pesel.substr(-1));
@@ -77,7 +66,7 @@ class Registration extends React.Component {
       sum += parseInt(pesel[i] * weight[i]);
     }
 
-    return (10 - (sum % 10) === controlNumber);
+    return 10 - (sum % 10) === controlNumber;
   };
 
   handleSubmitRegistrationForm = (event) => {
@@ -101,28 +90,45 @@ class Registration extends React.Component {
 
     setTimeout(() => {
       if (this.areAllInputsValid()) {
-        const object = { firstName: firstName, secondName: secondName, lastName: lastName, password: password, birthDate: birthDate, phoneNumber: phoneNumber, pesel: pesel, email: email };
-        this.sendRequest(object);
+        const object = {
+          firstName: firstName,
+          secondName: secondName,
+          lastName: lastName,
+          password: password,
+          birthDate: birthDate,
+          phoneNumber: phoneNumber,
+          pesel: pesel,
+          email: email,
+        };
+        localStorage.setItem("registeredData", JSON.stringify(object));
+        window.location.href = "questionnaire";
       }
     }, 1000);
-  }
+  };
 
   areAllInputsValid = () => {
-
-    return (this.isEmpty(this.state.firstNameError) && this.isEmpty(this.state.secondNameError) && this.isEmpty(this.state.lastNameError) && this.isEmpty(this.state.birthDateError) && this.isEmpty(this.state.peselError) && this.isEmpty(this.state.emailError) && this.isEmpty(this.state.phoneNumberError) && this.isEmpty(this.state.passwordError));
-  }
+    return (
+      this.isEmpty(this.state.firstNameError) &&
+      this.isEmpty(this.state.secondNameError) &&
+      this.isEmpty(this.state.lastNameError) &&
+      this.isEmpty(this.state.birthDateError) &&
+      this.isEmpty(this.state.peselError) &&
+      this.isEmpty(this.state.emailError) &&
+      this.isEmpty(this.state.phoneNumberError) &&
+      this.isEmpty(this.state.passwordError)
+    );
+  };
 
   isEmpty = (value) => {
-    return (value === '');
-  }
+    return value === "";
+  };
 
   setErrorsToInput(value, statePropertyName) {
     if (value === "") {
       this.setState({
-        [`${statePropertyName}`]: this.errors.emptyDataError
+        [`${statePropertyName}`]: this.errors.emptyDataError,
       });
-    }
-    else {
+    } else {
       switch (statePropertyName) {
         case "peselError":
           this.setWrongPeselErrorToInput(value);
@@ -138,7 +144,7 @@ class Registration extends React.Component {
           break;
         default:
           this.setState({
-            [`${statePropertyName}`]: ""
+            [`${statePropertyName}`]: "",
           });
       }
     }
@@ -151,18 +157,16 @@ class Registration extends React.Component {
       );
       if (pattern.test(value)) {
         this.setState({
-          passwordError: ""
+          passwordError: "",
         });
-      }
-      else {
+      } else {
         this.setState({
-          passwordError: this.errors.passwordError
+          passwordError: this.errors.passwordError,
         });
       }
-    }
-    else {
+    } else {
       this.setState({
-        passwordError: this.errors.passwordError
+        passwordError: this.errors.passwordError,
       });
     }
   }
@@ -170,12 +174,11 @@ class Registration extends React.Component {
   setWrongPhoneNumberErrorToInput(value) {
     if (value.toString().length !== 9) {
       this.setState({
-        phoneNumberError: this.errors.phoneNumberError
+        phoneNumberError: this.errors.phoneNumberError,
       });
-    }
-    else {
+    } else {
       this.setState({
-        phoneNumberError: ""
+        phoneNumberError: "",
       });
     }
   }
@@ -183,12 +186,11 @@ class Registration extends React.Component {
   setWrongPeselErrorToInput(pesel) {
     if (!this.isPeselValid(pesel)) {
       this.setState({
-        peselError: this.errors.peselError
+        peselError: this.errors.peselError,
       });
-    }
-    else {
+    } else {
       this.setState({
-        peselError: ""
+        peselError: "",
       });
     }
   }
@@ -200,7 +202,7 @@ class Registration extends React.Component {
     for (var i = 0; i < value.length; i++) {
       if (value[i] === "@") {
         isAt = true;
-        let splitedValue = value.split('@');
+        let splitedValue = value.split("@");
         if (splitedValue[0] !== "") {
           isSthBeforeAt = true;
         }
@@ -211,24 +213,21 @@ class Registration extends React.Component {
     }
     if (!isAt) {
       this.setState({
-        emailError: this.errors.emailError.nonAt
+        emailError: this.errors.emailError.nonAt,
       });
-    }
-    else {
+    } else {
       if (!isSthBeforeAt) {
         this.setState({
-          emailError: this.errors.emailError.nonSignBeforeAt
+          emailError: this.errors.emailError.nonSignBeforeAt,
         });
-      }
-      else {
+      } else {
         if (!isSthAfterAt) {
           this.setState({
-            emailError: this.errors.emailError.nonSignAfterAt
+            emailError: this.errors.emailError.nonSignAfterAt,
           });
-        }
-        else {
+        } else {
           this.setState({
-            emailError: ""
+            emailError: "",
           });
         }
       }
@@ -248,12 +247,12 @@ class Registration extends React.Component {
     } = this.state;
 
     return (
-      <FormTemplate
-        title="Zarejestruj się"
-        content={
-          <form onSubmit={this.handleSubmitRegistrationForm}>
-            <label htmlFor="firstName"> Imię </label>
-            <input
+      <div className="registrationContent">
+        <h1 className="title">Zarejestruj się</h1>
+        <Form onSubmit={this.handleSubmitRegistrationForm}>
+          <Form.Group className="mb-3" controlId="formFirstName">
+            <Form.Label>Imię:</Form.Label>
+            <Form.Control
               name="firstName"
               placeholder="Imię"
               type="text"
@@ -261,9 +260,13 @@ class Registration extends React.Component {
               onChange={this.handleFormOnChange}
               maxLength={25}
             />
-            <p className="errorMessage">{this.state.firstNameError}</p>
-            <label htmlFor="secondName"> Drugie imię </label>
-            <input
+          </Form.Group>
+          <span className="errorMessage">{this.state.firstNameError}</span>
+          <hr />
+
+          <Form.Group className="mb-3" controlId="formSecondName">
+            <Form.Label>Drugie imię:</Form.Label>
+            <Form.Control
               name="secondName"
               placeholder="Drugie imię"
               type="text"
@@ -271,9 +274,13 @@ class Registration extends React.Component {
               onChange={this.handleFormOnChange}
               maxLength={25}
             />
-            <p className="errorMessage">{this.state.secondNameError}</p>
-            <label htmlFor="lastName"> Nazwisko </label>
-            <input
+          </Form.Group>
+          <span className="errorMessage">{this.state.secondNameError}</span>
+          <hr />
+
+          <Form.Group className="mb-3" controlId="formLastName">
+            <Form.Label>Nazwisko:</Form.Label>
+            <Form.Control
               name="lastName"
               lastname="lastName"
               placeholder="Nazwisko"
@@ -282,18 +289,26 @@ class Registration extends React.Component {
               onChange={this.handleFormOnChange}
               maxLength={40}
             />
-            <p className="errorMessage">{this.state.lastNameError}</p>
-            <label htmlFor="birthDate"> Data urodzenia </label>
-            <input
+          </Form.Group>
+          <span className="errorMessage">{this.state.lastNameError}</span>
+          <hr />
+
+          <Form.Group className="mb-3" controlId="formBirthday">
+            <Form.Label>Data urodzenia:</Form.Label>
+            <Form.Control
               name="birthDate"
               type="date"
               value={birthDate}
               onChange={this.handleFormOnChange}
               max={this.getCurrentData()}
             />
-            <p className="errorMessage">{this.state.birthDateError}</p>
-            <label htmlFor="pesel"> Pesel </label>
-            <input
+          </Form.Group>
+          <span className="errorMessage">{this.state.birthDateError}</span>
+          <hr />
+
+          <Form.Group className="mb-3" controlId="formPeselNumber">
+            <Form.Label>Numer PESEL:</Form.Label>
+            <Form.Control
               name="pesel"
               type="text"
               placeholder="Pesel"
@@ -301,48 +316,65 @@ class Registration extends React.Component {
               onChange={this.handleFormOnChange}
               maxLength={11}
             />
-            <p className="errorMessage">{this.state.peselError}</p>
-            <label htmlFor="email"> Email </label>
-            <input
+          </Form.Group>
+          <span className="errorMessage">{this.state.peselError}</span>
+          <hr />
+
+          <Form.Group className="mb-3" controlId="formEmailAdress">
+            <Form.Label>Adres email:</Form.Label>
+            <Form.Control
               name="email"
               type="text"
               placeholder="Email"
               value={email}
               onChange={this.handleFormOnChange}
             />
-            <p className="errorMessage">{this.state.emailError}</p>
-            <label htmlFor="phoneNumber"> Numer telefonu </label>
-            <input
+          </Form.Group>
+          <span className="errorMessage">{this.state.emailError}</span>
+          <hr />
+
+          <Form.Group className="mb-3" controlId="formPhoneNumber">
+            <Form.Label>Numer telefonu:</Form.Label>
+            <Form.Control
               name="phoneNumber"
               type="number"
               placeholder="999999999"
               value={phoneNumber}
               onChange={this.handleFormOnChange}
             />
-            <p className="errorMessage">{this.state.phoneNumberError}</p>
-            <label htmlFor="password"> Hasło </label>
-            <input
+          </Form.Group>
+          <span className="errorMessage">{this.state.phoneNumberError}</span>
+          <hr />
+
+          <Form.Group className="mb-3" controlId="formPassword">
+            <Form.Label>Hasło:</Form.Label>
+            <Form.Control
               name="password"
               type="password"
               value={password}
               onChange={this.handleFormOnChange}
               maxLength={40}
             />
-            <p className="errorMessage">{this.state.passwordError}</p>
-            <button type="submit" value="Submit">
-              Zarejestruj
-            </button>
-          </form>
-        }
-        options={
-          <p>
+            <Form.Text muted>
+              Twoje hasło musi mieć minimalną długość 8 znaków, zawierać
+              conajmniej 1 małą i dużą literę, cyfrę oraz znak specjalny
+            </Form.Text>
+            <br />
+            <span className="errorMessage">{this.state.passwordError}</span>
+            <hr />
+          </Form.Group>
+
+          <Button variant="primary" type="submit" value="Submit">
+            Zarejestruj
+          </Button>
+          <span className="loginSpan">
             Masz już konto?{" "}
             <a href="login" path="./login">
               Zaloguj się
             </a>
-          </p>
-        }
-      />
+          </span>
+        </Form>
+      </div>
     );
   }
 }

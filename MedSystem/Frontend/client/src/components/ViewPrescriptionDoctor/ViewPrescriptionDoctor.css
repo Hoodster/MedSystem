@@ -1,0 +1,13 @@
+.findPrescriptionButton { 
+    margin-bottom: 20px;
+}
+.alertsPrescription { 
+    display: flex;
+    justify-content: space-evenly;
+    align-items: flex-start;
+
+}
+.alertsPrescription > * {
+    width: 22%;
+    align-self: center;
+}

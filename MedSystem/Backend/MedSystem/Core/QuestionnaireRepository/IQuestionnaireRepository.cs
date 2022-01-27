@@ -12,5 +12,6 @@ namespace MedSystem.Core.QuestionnaireRepository
         public void CreateDatabaseConnection(QuestionnaireDTO questionnaire);
         public Task<Questionnaire> GetCurrentUserQuestionnaireAsync();
         public Task UpdateCurrentUserQuestionnaireAsync(QuestionnaireDTO questionnaire);
+        public IQueryable<Questionnaire> GetQuestionnaireByPesel(string pesel);
     }
 }

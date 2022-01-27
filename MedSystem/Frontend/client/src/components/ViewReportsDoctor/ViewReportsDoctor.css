@@ -1,0 +1,14 @@
+.findReportButton {
+    margin-bottom: 20px;
+}
+
+.alertsRaports { 
+    display: flex;
+    justify-content: space-evenly;
+    align-items: flex-start;
+
+}
+.alertsRaports > * {
+    width: 25%;
+    align-self: center;
+}

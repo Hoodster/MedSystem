@@ -1,0 +1,35 @@
+.mailFormContainer {
+  float: right;
+  margin-top: 100px;
+  position: fixed;
+  margin-left: 50%;
+}
+
+.listOfDoctorsContainer {
+  float: left;
+  margin-top: 100px;
+  margin-bottom: 100px;
+}
+
+.noPointers {
+  pointer-events: none;
+}
+
+.doctorsInfo {
+  margin: 20px;
+  padding: 10px;
+  border-color: black;
+  border-style: solid;
+  border-radius: 12px;
+}
+
+.doctorsInfo:hover {
+  background-color: #6d6875;
+  color: white;
+  cursor: pointer;
+}
+
+.active {
+  background-color: #212529;
+  color: white;
+}

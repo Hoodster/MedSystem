@@ -23,6 +23,10 @@ using System.Text.Json.Serialization;
 using MedSystem.Core.Repositories.PatientRepository;
 using MedSystem.Core.Repositories.DoctorRepository;
 using MedSystem.Core.Repositories.AdminRepository;
+using MedSystem.Core.Repositories.VisitsRepository;
+using Newtonsoft.Json;
+using MedSystem.Core.Repositories.RaportRepository;
+using MedSystem.Core.Repositories.PrescriptionRepository;
 
 namespace MedSystem
 {
@@ -79,7 +83,10 @@ namespace MedSystem
                      };
                  });
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default")));
-            services.AddControllers().AddNewtonsoftJson();
+            services.AddControllers().AddNewtonsoftJson(o =>
+            {
+                o.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            });
             services.AddHttpContextAccessor();
             services.AddSwaggerGen(c =>
             {
@@ -154,14 +161,10 @@ namespace MedSystem
             services.AddScoped<IPatientRepository, PatientRepository>();
             services.AddScoped<IDoctorRepository, DoctorRepository>();
             services.AddScoped<IAdminRepository, AdminRepository>();
+            services.AddScoped<IVisitsRepository, VisitsRepository>();
+            services.AddScoped<IReportRepository, ReportRepository>();
+            services.AddScoped<IPrescriptionRepository, PrescriptionRepository>();
         }
 
-        private void AddDI(IServiceCollection services)
-        {
-            services.AddScoped<IAccountRepository, AccountRepository>();
-            services.AddScoped<IQuestionnaireRepository, QuestionnaireRepository>();
-            services.AddSingleton<IAuthenticationService, AuthenticationService>();
-            services.AddScoped<IPatientRepository, PatientRepository>();
-        }
     }
 }

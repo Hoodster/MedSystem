@@ -11,6 +11,11 @@ namespace MedSystem.Core.QuestionnaireRepository
     {
         private readonly ApplicationDbContext _applicationDbContext;
         private readonly IAccountRepository _accountRepository;
+        public QuestionnaireRepository(ApplicationDbContext dbContext, IAccountRepository accountRepository)
+        {
+            this._accountRepository = accountRepository;
+            this._applicationDbContext = dbContext;
+        }
         public void CreateDatabaseConnection( QuestionnaireDTO questionnaire)
         {
             var questionnaireModel = new Questionnaire(questionnaire);
@@ -26,9 +31,15 @@ namespace MedSystem.Core.QuestionnaireRepository
             return userQuestionnaire;
         }
 
+        public IQueryable<Questionnaire> GetQuestionnaireByPesel(string pesel)
+        {
+            var patient = _applicationDbContext.Users.SingleOrDefault(u => u.PESEL == pesel);
+            var questionnaire = _applicationDbContext.HealthQuestionnaires.Where(u => u.PatientId.Equals(patient.PatientId));
+            return questionnaire;
+        }
+
         public async Task UpdateCurrentUserQuestionnaireAsync( QuestionnaireDTO questionnaire)
         {
-
             var currentUser = await _accountRepository.GetCurrentUser();
             var oldQuestionnaire = _applicationDbContext.HealthQuestionnaires
                 .Single(q => q.PatientId == currentUser.PatientId.Value);

@@ -1,3 +1,18 @@
 .errorMessage {
-    color: red;
+  color: red;
+}
+
+.registrationContent {
+  width: 60%;
+  margin-top: 5%;
+  margin-bottom: 5%;
+  margin-left: 20%;
+  margin-right: auto;
+  border-radius: 3%;
+  border: black 2px solid;
+  padding: 1% 3% 5% 3%;
+}
+
+.loginSpan {
+  float: right;
 }

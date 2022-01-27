@@ -1,0 +1,11 @@
+p {
+    margin-top: 50px;
+}
+.visits-container{
+    display: flex;
+    flex-direction: column;
+}
+
+.btn-visit{
+    margin-top: 20px;
+}

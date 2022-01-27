@@ -39,7 +39,6 @@
     <None Remove="Core\Repositories\DoctorRepository\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Models\DTO\" />
     <Folder Include="Core\Repositories\AccountRepository\" />
     <Folder Include="Core\Services\" />
     <Folder Include="Exceptions\" />

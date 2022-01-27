@@ -1,0 +1,7 @@
+.alertVisit {
+    display: flex;
+    justify-content: space-evenly
+}
+.alertVisit > span {
+    width: 15%;
+}

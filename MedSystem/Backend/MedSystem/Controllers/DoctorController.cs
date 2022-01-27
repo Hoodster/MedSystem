@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using MedSystem.Core.AccountRepository;
+using MedSystem.Core.Repositories.DoctorRepository;
 using MedSystem.Core.Services;
 using MedSystem.Exceptions;
 using MedSystem.Models;
@@ -18,11 +21,13 @@ namespace MedSystem.Controllers
     {
         private readonly IAccountRepository _accountRepository;
         private readonly IAuthenticationService _accountService;
+        private readonly IDoctorRepository _doctorRepository;
 
-        public DoctorController(IAccountRepository accountRepository, IAuthenticationService accountService)
+        public DoctorController(IAccountRepository accountRepository, IAuthenticationService accountService, IDoctorRepository doctorRepository)
         {
             _accountRepository = accountRepository;
             _accountService = accountService;
+            _doctorRepository = doctorRepository;
         }
 
         [Route("create")]
@@ -32,6 +37,13 @@ namespace MedSystem.Controllers
         {
             var result = await _accountRepository.CreateAccount(user, ApplicationRoles.Doctor);
             return Ok(result);
+        }
+
+        [Route("doctorslist")]
+        [HttpGet]
+        public List<Doctor> GetAllDoctors()
+        {
+            return _doctorRepository.GetAllDoctors();
         }
     } 
 }

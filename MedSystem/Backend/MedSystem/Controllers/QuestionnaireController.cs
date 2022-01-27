@@ -58,6 +58,15 @@ namespace MedSystem.Controllers
 
             return Ok(userQuestionnaire);
         }
-        
+
+        [Route("getQuestionnaireByPesel")]
+        [HttpGet]
+        public IActionResult GetQuestionnaireByPesel([FromQuery] string pesel)
+        {
+            var questionnaire = _questionnaireRepository.GetQuestionnaireByPesel(pesel);
+
+            return Ok(questionnaire);
+        }
+
     }
 }

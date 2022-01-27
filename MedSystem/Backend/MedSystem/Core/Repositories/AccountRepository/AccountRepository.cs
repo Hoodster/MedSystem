@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
@@ -132,6 +133,30 @@ namespace MedSystem.Core.AccountRepository
             }
             await _userManager.AddToRoleAsync(user, role);
 
-        }       
+        }
+
+        public async Task LockUserAsync(string email)
+        {
+            var endDate = new DateTime(9999, 12, 12);
+            var user = await _userManager.FindByEmailAsync(email);
+            user.LockoutEnabled = true;
+            user.LockoutEnd = endDate;
+            await _userManager.UpdateAsync(user);
+        }
+
+        public async Task UnlockUserAsync(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            user.LockoutEnd = null;
+            await _userManager.UpdateAsync(user);
+        }
+
+        public async Task<User> GetUserByMailAsync(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            return user;
+        }
+
+        
     }
 }

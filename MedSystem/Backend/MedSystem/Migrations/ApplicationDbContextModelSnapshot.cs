@@ -67,6 +67,39 @@ namespace MedSystem.Migrations
                     b.ToTable("Patients");
                 });
 
+            modelBuilder.Entity("MedSystem.Models.Prescription", b =>
+                {
+                    b.Property<Guid>("PrescriptionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("DoctorId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("PatientId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("PrescriptionDescription")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PrescriptionFulfilled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PrescriptonCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PrescriptonReceiptCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("PrescriptionId");
+
+                    b.HasIndex("DoctorId");
+
+                    b.HasIndex("PatientId");
+
+                    b.ToTable("Prescriptions");
+                });
+
             modelBuilder.Entity("MedSystem.Models.Questionnaire", b =>
                 {
                     b.Property<Guid>("QuestionnaireID")
@@ -242,6 +275,61 @@ namespace MedSystem.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("MedSystem.Models.VisitReport", b =>
+                {
+                    b.Property<Guid>("RaportId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ReportBody")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset>("ReportDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("ReportTitle")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("VisitId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("RaportId");
+
+                    b.HasIndex("VisitId");
+
+                    b.ToTable("VisitReports");
+                });
+
+            modelBuilder.Entity("MedSystem.Models.Visits", b =>
+                {
+                    b.Property<Guid>("VisitId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("DoctorId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("PatientId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("VisitDateFinish")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<DateTimeOffset>("VisitDateStart")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<TimeSpan>("VisitTime")
+                        .HasColumnType("time");
+
+                    b.HasKey("VisitId");
+
+                    b.HasIndex("DoctorId");
+
+                    b.HasIndex("PatientId");
+
+                    b.ToTable("Visits");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -400,6 +488,25 @@ namespace MedSystem.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("MedSystem.Models.Prescription", b =>
+                {
+                    b.HasOne("MedSystem.Models.Doctor", "Doctor")
+                        .WithMany()
+                        .HasForeignKey("DoctorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MedSystem.Models.Patient", "Patient")
+                        .WithMany()
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Doctor");
+
+                    b.Navigation("Patient");
+                });
+
             modelBuilder.Entity("MedSystem.Models.Questionnaire", b =>
                 {
                     b.HasOne("MedSystem.Models.Patient", "Patient")
@@ -426,6 +533,36 @@ namespace MedSystem.Migrations
                         .HasForeignKey("PatientId");
 
                     b.Navigation("Admin");
+
+                    b.Navigation("Doctor");
+
+                    b.Navigation("Patient");
+                });
+
+            modelBuilder.Entity("MedSystem.Models.VisitReport", b =>
+                {
+                    b.HasOne("MedSystem.Models.Visits", "Visit")
+                        .WithMany()
+                        .HasForeignKey("VisitId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Visit");
+                });
+
+            modelBuilder.Entity("MedSystem.Models.Visits", b =>
+                {
+                    b.HasOne("MedSystem.Models.Doctor", "Doctor")
+                        .WithMany()
+                        .HasForeignKey("DoctorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MedSystem.Models.Patient", "Patient")
+                        .WithMany()
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Doctor");
 
